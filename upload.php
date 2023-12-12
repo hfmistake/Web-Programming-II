@@ -11,7 +11,7 @@
     </head>
     <body>
         <form action="" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
+            <div class="mb-3 d-inline-block">
                 <label for="formFile" class="form-label p-2">Escolha seu arquivo de imagem</label>
                 <input class="form-control" type="file" name="file" id="formFile">
                 <button class="btn btn-primary" type="submit" name="submit">Enviar</button>
@@ -21,17 +21,19 @@
 </html>
 
 <?php
+require_once "utils.php";
+session_start();
+$_SESSION['user'] = 'admin';
 if (isset($_POST["submit"])) {
     $arquivo = $_FILES["file"];
-
-    $arquivoNovo = explode('.', $arquivo["name"]);
-
-    if ($arquivoNovo[sizeof($arquivoNovo) - 1] != 'jpeg') {
+    if (validateEmptyFile($arquivo)) {
+        die("Você não escolheu nenhum arquivo");
+    }
+    if (!isImageValid($arquivo)) {
         die("Você não pode fazer upload deste tipo de arquivo");
     } else {
-        // create uploads directory if not exists with user subdirectory
         if (!file_exists('uploads/' . $_SESSION['user'])) {
-            mkdir('uploads/' . $_SESSION['user'], 0777, true);
+            mkdir('uploads/' . $_SESSION['user'], true);
         }
         move_uploaded_file($arquivo["tmp_name"], 'uploads/' . $_SESSION['user'] . '/' . $arquivo["name"]);
         echo "Upload foi feito com sucesso.";
