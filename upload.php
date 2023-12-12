@@ -9,12 +9,12 @@
         <script src="bootstrap/js/bootstrap.js"></script>
         <title>Fazer upload</title>
     </head>
-    <body>
+    <body class="container">
         <form action="" method="post" enctype="multipart/form-data">
-            <div class="mb-3 d-inline-block">
+            <div class="row mb-3">
                 <label for="formFile" class="form-label p-2">Escolha seu arquivo de imagem</label>
                 <input class="form-control" type="file" name="file" id="formFile">
-                <button class="btn btn-primary" type="submit" name="submit">Enviar</button>
+                <button class="btn btn-primary mt-3 col-4 offset-4" type="submit" name="submit">Enviar</button>
             </div>
         </form>
     </body>
@@ -26,16 +26,18 @@ session_start();
 $_SESSION['user'] = 'admin';
 if (isset($_POST["submit"])) {
     $arquivo = $_FILES["file"];
-    if (validateEmptyFile($arquivo)) {
-        die("Você não escolheu nenhum arquivo");
+    if (validateNullFile($arquivo)) {
+        echo "<div class='alert alert-danger' role='alert'>Você não selecionou nenhum arquivo</div>";
+        die();
     }
     if (!isImageValid($arquivo)) {
-        die("Você não pode fazer upload deste tipo de arquivo");
+        echo "<div class='alert alert-danger' role='alert'>O arquivo selecionado não é uma imagem válida</div>";
+        die();
     } else {
         if (!file_exists('uploads/' . $_SESSION['user'])) {
             mkdir('uploads/' . $_SESSION['user'], true);
         }
         move_uploaded_file($arquivo["tmp_name"], 'uploads/' . $_SESSION['user'] . '/' . $arquivo["name"]);
-        echo "Upload foi feito com sucesso.";
+        echo "<div class='alert alert-success' role='alert'>Upload realizado com sucesso</div>";
     }
 }

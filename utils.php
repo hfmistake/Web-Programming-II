@@ -1,6 +1,7 @@
 <?php
 require_once "connection.php";
-function validateUser($username, $password){
+function validateUser($username, $password)
+{
     global $conexao;
     $sql = "SELECT * FROM user WHERE user = :username AND password = :password";
     $stmt = $conexao->prepare($sql);
@@ -14,10 +15,14 @@ function validateUser($username, $password){
         return false;
     }
 }
-function validateEmptyFile($file){
-    return $file["size"] == 0;
+
+function validateNullFile($file)
+{
+    return $file["error"] == 4;
 }
-function isImageValid($file) {
+
+function isImageValid($file)
+{
     $allowedExtensions = ['jpeg', 'jpg', 'png'];
     $fileType = explode('.', $file["name"]);
     return in_array(strtolower(end($fileType)), $allowedExtensions);
