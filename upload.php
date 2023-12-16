@@ -23,6 +23,9 @@
 
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    header("location: login.php");
+}
 require_once "utils.php";
 if (isset($_POST["submit"])) {
     $arquivo = $_FILES["file"];
