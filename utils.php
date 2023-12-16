@@ -59,3 +59,13 @@ function getCurrentUserId(): int
     $stmt->execute();
     return $stmt->fetchColumn();
 }
+
+function validateUsername($username): bool
+{
+    global $conexao;
+    $sql = "SELECT username FROM user WHERE username = :username";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}

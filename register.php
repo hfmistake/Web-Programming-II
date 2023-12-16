@@ -8,6 +8,9 @@ if (isset($_POST["submit"])) {
             $username_err = "Por favor, insira um nome de usuário.";
         } else {
             $username = trim($_POST["username"]);
+            if (validateUsername($username)) {
+                $username_err = "Este nome de usuário já está em uso.";
+            }
         }
         if (empty(trim($_POST["password"]))) {
             $password_err = "Por favor, insira uma senha.";
